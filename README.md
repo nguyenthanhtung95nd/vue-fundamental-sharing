@@ -1,2 +1,2 @@
-# vue-fundamental-training
+# vue-fundamental-sharing
 Basic vue.js

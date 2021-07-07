@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="style.css">
+    <title>Flash Card App</title>
+</head>
+
+<body>
+    <div id="app">
+        <h1>Demo chapter 2</h1>
+        <!-- Text field bindings -->
+        <form method="post" action="">
+            <div>
+                <label for="name">Name: </label>
+                <!-- Adding modifiers [trim] -->
+                <input v-model.trim="titleName" type="text" id="name" name="name"> ({{ titleName.length }} characters)
+            </div>
+
+            <div>
+                <label for="description">Description: </label>
+                <!-- Adding modifiers [lazy] -->
+                <textarea v-model="titleDescription" id="description" name="description"></textarea>
+                ({{ charsLeft }} left)
+            </div>
+
+            <!-- Using v-model with related checkboxes -->
+            <div class="options">
+                <div>
+                    <input v-model="options" true-value="on" false-value="off" type="checkbox" id="reverse"
+                        value="reverse">
+                    <label for="reverse">Include reverse cards</label>
+                </div>
+
+                <div>
+                    <input v-model="options" type="checkbox" id="time_limit" value="time_limit">
+                    <label for="time_limit">Use time limit</label>
+                </div>
+
+                <div>
+                    <input v-model="options" type="checkbox" id="reminders" value="reminders">
+                    <label for="reminders">Enable reminders</label>
+                </div>
+            </div>
+
+            <div>
+                selected options: <strong>{{ options }}</strong>
+            </div>
+
+            <!-- Configuring radio buttons and select elements -->
+            <fieldset class="leech-action">
+                <legend>Leech action</legend>
+                <div>
+                    <input v-model="leech" type="radio" id="tag" name="leech" value="tag">
+                    <label for="tag">tag</label>
+                </div>
+                <div>
+                    <input v-model="leech" type="radio" id="suspend" name="leech" value="suspend">
+                    <label for="suspend">suspend</label>
+                </div>
+            </fieldset>
+            <div>
+                leech-action: <strong>{{ leech }}</strong>
+            </div>
+
+            <div class="category">
+                <label for="category">Category:</label>
+                <!-- Adding modifiers [number] -->
+                <select v-model.number="categoryId" name="category" id="category">
+                    <option value="">Select</option>
+                    <option value="1">Foreign Language</option>
+                    <option value="2">History</option>
+                    <option value="3">Biology</option>
+                    <option value="4">Geography</option>
+                    <option value="5">Law</option>
+                    <option value="6">Programming</option>
+                </select>
+            </div>
+
+            <div>
+                select value category: <strong>{{ categoryId }}</strong>
+            </div>
+
+            <button @click.prevent="submit" type="submit">Create</button>
+        </form>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="https://unpkg.com/vue@3.0.7/dist/vue.global.js"></script>
+    <script>
+        const FlashCardApp = {
+            data() {
+                return {
+                    titleName: 'Vue.js Fundamentals',
+                    titleDescription: '',
+                    options: [],
+                    leech: 'tag',
+                    categoryId: ''
+                };
+            },
+            computed: {
+                charsLeft() {
+                    return 200 - this.titleDescription.length;
+                }
+            },
+            methods: {
+                submit() {
+                    alert('submitting...');
+                }
+            }
+        };
+
+        const app = Vue.createApp(FlashCardApp).mount('#app');
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="style.css">
+    <title>Flash Card App</title>
+</head>
+
+<body>
+    <div id="app">
+        <h1>Demo chapter 5</h1>
+        <!-- Binding to inner text and HTML -->
+        <h1 v-text="titlePage"></h1>
+
+        <!-- Dynamic attributes and v-model -->
+        <div class="user-input">
+            Type somthing:
+            <input type="text" v-model="userInput">
+        </div>
+
+        <!-- Handling events with v-on -->
+        <div @click="flipped = !flipped" class="card">
+            <h2 v-text="flipped ? '' : cards[index].front"></h2>
+            <div v-html="flipped ? cards[index].back : ''"></div>
+        </div>
+
+        <div class="navigation">
+            <button @click="move(-1)" type="button">&#8592;</button>
+            <button @click="move(1)" type="button">&#8594;</button>
+        </div>
+
+        <!-- Creating and registering components -->
+        <!-- Using component props -->
+        <read-more :url="readMoreUrl">
+            {{ readMoreUrl }}
+            <template v-slot:copyright="props"><p>&copy; {{props.year}} Flashcard App</p></template>
+        </read-more>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="https://unpkg.com/vue@3.0.7/dist/vue.global.js"></script>
+    <script>
+        const FlashCardApp = {
+            data() {
+                return {
+                    titlePage: 'Vue.js Fundamentals',
+                    cards,
+                    index: 0,
+                    flipped: false,
+                    userInput: 'Type somethings',
+                    readMoreUrl: 'https://v3.vuejs.org/guide'
+                };
+            },
+            methods: {
+                move(change) {
+                    if (this.cards[this.index + change]) {
+                        this.index += change;
+                        this.flipped = false;
+                    }
+                }
+            }
+        };
+
+        const app = Vue.createApp(FlashCardApp);
+
+        // Creating and registering components
+        app.component('read-more', {
+                template: '<a :href="url"><slot>Read more</slot></a><slot :year="year" name="copyright"></slot>',
+                name: 'ReadMore',
+                // Using component props
+                props: ['url'],
+                data() {
+                    return {
+                        year: 2021
+                    };
+                }
+            });
+        app.mount('#app');
+    </script>
+</body>
+
+</html>
